@@ -4,6 +4,30 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <script>
+        function openClient(scheme_url, download_url, timeout = 600) {
+            var startTime = Date.now();
+            var ifr = document.createElement('iframe');
+            ifr.src = scheme_url;
+            ifr.style.display = 'none';
+            document.body.appendChild(ifr);
+            var t = setTimeout(function () {
+                var endTime = Date.now();
+                if (!startTime || endTime - startTime < timeout + 200) {
+                    //未安裝應用程式執行部分
+                    if (confirm("您未安裝 Line，要前往 Line 官網嗎？")) {
+                        window.open(download_url, "_blank");
+                    }
+                }
+            }, timeout);
+            window.onblur = function () {
+                clearTimeout(t);
+                window.addEventListener("DOMContentLoaded", function () {
+                    document.body.removeChild(ifr);
+                }, false);
+            }
+        }
+    </script>
 </head>
 <body>
     123
